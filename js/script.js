@@ -5,25 +5,34 @@ window.addEventListener('load', function(){
     const canvas = document.getElementById('play-area');
     const ctx = canvas.getContext('2d');
     canvas.width = 500;
-    canvas.height = 1000;
+    canvas.height = 1000;  
+    // var canvasPos = {
+    //     x: canvas.offsetLeft,
+    //     y: canvas.getBoundingClientRect().top
+    // };
+    var canvasRect = canvas.getBoundingClientRect();
 
     class Game {
-        constructor(width, height, canvasx){
+        constructor(width, height, canvasRect){
             this.width = width;
             this.height = height;
-            this.canvasx = canvasx;
+            this.canvasRect = canvasRect;
+            this.canvasScale = {
+                x: this.width / this.canvasRect.width,
+                y: this.height / this.canvasRect.height
+            }
             this.player = new Player(this);
-            this.input = new InputHandler();
+            this.input = new InputHandler(this.canvasRect, this.canvasScale);
         }
         update(){
-            this.player.update(this.input.mousedown, this.input.mousex, this.canvasx);
+            this.player.update(this.input.mousedown, this.input.mousePos);
         }
         draw(context){
             this.player.draw(context);
         }
     }
 
-    const game = new Game(canvas.width, canvas.height, canvas.getBoundingClientRect().left);
+    const game = new Game(canvas.width, canvas.height, canvasRect);
 
     console.log(game);
 
@@ -32,7 +41,6 @@ window.addEventListener('load', function(){
         game.update();
         game.draw(ctx);
         requestAnimationFrame(animate);
-        
     }
     animate();
 });

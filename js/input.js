@@ -1,7 +1,10 @@
 export class InputHandler{
-    constructor(){
+    constructor(canvasRect, canvasScale){
         this.mousedown = false;
-        this.mousex = 0;
+        this.mousePos = {
+            x: 0,
+            y: 0
+        }
         window.addEventListener('mousedown', e => {
             this.mousedown = true;
         });
@@ -9,7 +12,10 @@ export class InputHandler{
             this.mousedown = false;
         });
         window.addEventListener('mousemove', e => {
-            this.mousex = e.clientX;
+            this.mousePos.x = (e.clientX - canvasRect.left) * canvasScale.x;
+            this.mousePos.y = (e.clientY - canvasRect.top) * canvasScale.y;
+            // this.mousePos.x = e.clientX
+            // this.mousePos.y = e.clientY
         });
     }
 }
