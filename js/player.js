@@ -19,39 +19,33 @@ export class Player {
         this.vx = 0; // horizontal velocity of character
         this.weight = 1.5; // gravity acceleration = 1, gravity force = 1 * weight
         this.anglerad = 45 * Math.PI / 180; // to which angle character will launch
-        this.groundFriction = 0.5; // what makes horizontal velocity stop
+        this.groundFriction = 30.0; // what makes horizontal velocity stop
 
         this.mousex = 0;
         this.mousey = 0;
     }
     update(press, mousePos){
-        if(this.onGround()){
+        if(!this.onAir()){
             if(press){
-                this.vx = 0;
-                this.vy = 0;
+                // this.vx = 0;
+                // this.vy = 0;
                 this.power = Math.min(this.maxpower, this.power+this.strength); // charge up power to jump
                 
             } else {
-                // sistem sudut pake jump king, cuman berdasarkan arah aja kanan-kiri-atas
-                // let dotprod = this.dotproduct(this.x + this.width/2 + 1, this.y + this.height/2, this.mousex, this.mousey);
-                // if(dotprod > -this.width/2 && dotprod < this.width/2){
-                //     this.anglerad = 2 * 45 * Math.PI / 180;;
-                // } else if(dotprod-this.width/2 < 0){
-                //     this.anglerad = 3 * 45 * Math.PI / 180;
-                // } else {
-                //     this.anglerad = 45 * Math.PI / 180;
-                // }
-
                 // sistem angle berdasarkan posisi mouse, character akan loncat ke arah mouse
                 this.anglerad = this.getangle(this.x + this.width/2 + 1, this.y + this.height/2, this.mousex, this.mousey);
-
-                this.vy = -this.power * Math.sin(this.anglerad);
+                
+                if(this.y + this.height/2 <= this.mousey){
+                    this.vy = this.power * Math.sin(this.anglerad);
+                } else {
+                    this.vy = -this.power * Math.sin(this.anglerad);
+                }                
                 this.vx = this.power * Math.cos(this.anglerad);
+
                 this.power = 0; // reset charged power
             }
         }
 
-        
         this.x += this.vx;
         this.y += this.vy;
 
@@ -62,13 +56,13 @@ export class Player {
             this.vx = -Math.abs(this.vx);
         }
 
-        if(!this.onGround()){
+        if(this.onAir()){
             this.vy += this.weight; // vt = vo + gt
-        } else {
-            this.vy = 0; // when hit the ground, vertical velocity is 0
-            // this.vx = Math.max(0, this.vx-this.groundFriction); // not working ?
         }
+
         if(this.y > this.game.height - this.height) this.y = this.game.height - this.height; // corrector ground if fps is not good
+        if(this.x > this.game.width - this.spriteWidth) this.x = this.game.width - this.spriteWidth;
+        if(this.x < 0) this.x = 0;
 
         this.mousex = mousePos.x;
         this.mousey = mousePos.y;
@@ -78,6 +72,7 @@ export class Player {
         document.getElementById("chary").innerHTML = this.y + this.height/2;
         document.getElementById("mousex").innerHTML = this.mousex;
         document.getElementById("mousey").innerHTML = this.mousey;
+        // console.log(this.onAir());
     }
 
     draw(context){
@@ -89,10 +84,13 @@ export class Player {
         return this.y >= this.game.height - this.height;
     }
     isHitWallL(){
-        return (this.x < 0);
+        return (this.x <= 0);
     }
     isHitWallR(){
-        return (this.x > this.game.width - this.spriteWidth);
+        return (this.x >= this.game.width - this.spriteWidth);
+    }
+    onAir(){
+        return !(this.onGround() || this.isHitWallL() || this.isHitWallR());
     }
     dotproduct(ax, ay, bx, by){
         return ax*bx + ay*by;
