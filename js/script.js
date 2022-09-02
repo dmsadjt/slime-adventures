@@ -23,6 +23,7 @@ window.addEventListener('load', function(){
             }
             this.player = new Player(this);
             this.input = new InputHandler(this.canvasRect, this.canvasScale);
+            this.gameFrame = 0;
         }
         update(){
             this.player.update(this.input.mousedown, this.input.mousePos);
@@ -40,6 +41,7 @@ window.addEventListener('load', function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update();
         game.draw(ctx);
+        game.gameFrame++;
         requestAnimationFrame(animate);
     }
     animate();
