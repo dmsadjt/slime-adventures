@@ -7,8 +7,6 @@ export class Player {
         this.height = this.spriteHeight / 4;
         this.x = (this.game.width - this.width) / 2;
         this.y = this.game.height - this.height;
-        // this.charx = this.x + this.width/2;
-        // this.chary = this.y + this.height/2;
         this.image = new Image();
         this.image.src = '../assets/spritesheet/slime.png';
 
@@ -36,21 +34,20 @@ export class Player {
                 
             } else {
                 // sistem angle berdasarkan posisi mouse, character akan loncat ke arah mouse
-                this.anglerad = this.getangle(this.x + this.width/2 + 1, this.y + this.height/2, this.mousex, this.mousey);
+                this.anglerad = this.getangle(this.x + this.width/2 + 1, this.y + this.height/2, mousePos.x, mousePos.y);
                 
                 if(this.y + this.height/2 <= this.mousey){
                     this.vy = this.power * Math.sin(this.anglerad);
                 } else {
                     this.vy = -this.power * Math.sin(this.anglerad);
-                }                
-                this.anglerad = this.getangle(this.x + this.width / 2 + 1, this.y + this.height / 2, this.mousex, this.mousey);
+                }
 
                 if (this.game.gameFrame % 25 == 0) {
                     this.frame > 2 ? this.frame = 0 : this.frame++;
 
                 }
 
-                this.vy = -this.power * Math.sin(this.anglerad);
+                // this.vy = -this.power * Math.sin(this.anglerad);
                 this.vx = this.power * Math.cos(this.anglerad);
 
                 this.power = 0; // reset charged power
@@ -63,9 +60,14 @@ export class Player {
 
         if (this.isHitWallL()) {
             this.vx = Math.abs(this.vx);
+            this.animation = 2;
         }
         if (this.isHitWallR()) {
             this.vx = -Math.abs(this.vx);
+            this.animation = 1;
+        }
+        if(this.onGround()){
+            this.animation = 0;
         }
 
         if(this.onAir()){
@@ -73,19 +75,8 @@ export class Player {
         }
 
         if(this.y > this.game.height - this.height) this.y = this.game.height - this.height; // corrector ground if fps is not good
-        if(this.x > this.game.width - this.spriteWidth) this.x = this.game.width - this.spriteWidth;
+        if(this.x > this.game.width - this.width) this.x = this.game.width - this.width;
         if(this.x < 0) this.x = 0;
-
-        // ------------------------------------
-        if (!this.onGround()) {
-            this.vy += this.weight; // vt = vo + gt'
-            this.animation = 5;
-        } else {
-            this.vy = 0; // when hit the ground, vertical velocity is 0
-            // this.vx = Math.max(0, this.vx-this.groundFriction); // not working ?
-            this.animation = 0;
-        }
-        if (this.y > this.game.height - this.height) this.y = this.game.height - this.height; // corrector ground if fps is not good
 
         this.mousex = mousePos.x;
         this.mousey = mousePos.y;
@@ -95,7 +86,7 @@ export class Player {
         document.getElementById("chary").innerHTML = this.y + this.height / 2;
         document.getElementById("mousex").innerHTML = this.mousex;
         document.getElementById("mousey").innerHTML = this.mousey;
-        // console.log(this.onAir());
+        console.log(this.onGround());
     }
 
     draw(context) {
@@ -111,7 +102,7 @@ export class Player {
         return (this.x <= 0);
     }
     isHitWallR(){
-        return (this.x >= this.game.width - this.spriteWidth);
+        return (this.x >= this.game.width - this.width);
     }
     onAir(){
         return !(this.onGround() || this.isHitWallL() || this.isHitWallR());
