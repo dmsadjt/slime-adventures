@@ -9,6 +9,8 @@ export class Player {
         this.y = this.game.height - this.height;
         this.image = new Image();
         this.image.src = '../assets/spritesheet/slime.png';
+        this.score = 0;
+        this.health = 100;
 
         this.power = 0; // power to jump (y axis)
         this.strength = 1; // how much power increase per frame
@@ -86,7 +88,8 @@ export class Player {
         document.getElementById("chary").innerHTML = this.y + this.height / 2;
         document.getElementById("mousex").innerHTML = this.mousex;
         document.getElementById("mousey").innerHTML = this.mousey;
-        console.log(this.onGround());
+        document.getElementById("score").innerHTML = this.score;
+        document.getElementById("health").innerHTML = this.health;
     }
 
     draw(context) {
@@ -119,5 +122,13 @@ export class Player {
         ay -= (this.y + this.height / 2);
         by -= (this.y + this.height / 2);
         return Math.acos(this.dotproduct(ax, ay, bx, by) / (this.vectorlen(ax, ay) * this.vectorlen(bx, by)));
+    }
+
+    addScore(){
+        this.score += 100;
+    }
+
+    depleteHealth(){
+        this.health -= 0.1;
     }
 }
