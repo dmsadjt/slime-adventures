@@ -52,7 +52,7 @@ window.addEventListener('load', function(){
                 y: this.height / this.canvasRect.height
             }
             this.player = new Player(this);
-            this.level1 = new Level(level1);
+            this.level1 = new Level(level1, this.player);
             this.spike = new Spike(this, 0, this.height/3, 1);
             this.plant = new Plant(this, 0, this.height/10, 1);
             this.input = new InputHandler(this.canvasRect, this.canvasScale);
