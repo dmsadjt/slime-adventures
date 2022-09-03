@@ -71,6 +71,7 @@ export class Player {
 
         if(this.onAir()){
             this.vy += this.weight; // vt = vo + gt
+            this.animation = 5;
         }
 
         if(this.y > this.game.height - this.height) this.y = this.game.height - this.height; // corrector ground if fps is not good
