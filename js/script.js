@@ -18,30 +18,30 @@ window.addEventListener('load', function(){
     const level1 = {
         spike: [
             {
-                x: 10,
+                x: 0,
                 y: 20,
-                state : 0,
+                state : 1,
             },
             {
-                x: 20,
-                y: 30,
-                state : 1,
+                x: canvas.width-100,
+                y: 200,
+                state : 2,
             }
         ],
         rumput: [
             {
-                x: 30,
-                y: 20,
+                x: canvas.width-100,
+                y: 300,
                 state : 2,
             },
             {
-                x: 20,
-                y: 30,
+                x: 100,
+                y: canvas.height-100,
                 state : 0,
             }
         ],
     }
-
+    
     class Game {
         constructor(width, height, canvasRect){
             this.width = width;
