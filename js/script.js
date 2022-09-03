@@ -24,8 +24,8 @@ window.addEventListener('load', function(){
                 y: this.height / this.canvasRect.height
             }
             this.player = new Player(this);
-            this.spike = new Spike(this);
-            this.plant = new Plant(this);
+            this.spike = new Spike(this, 0, this.height/3, 1);
+            this.plant = new Plant(this, 0, this.height/10, 1);
             this.input = new InputHandler(this.canvasRect, this.canvasScale);
             this.gameFrame = 0;
         }
@@ -33,9 +33,9 @@ window.addEventListener('load', function(){
             this.player.update(this.input.mousedown, this.input.mousePos);
         }
         draw(context){
-            this.player.draw(context);
             this.spike.draw(context);
             this.plant.draw(context);
+            this.player.draw(context);
         }
     }
 

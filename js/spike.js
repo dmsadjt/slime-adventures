@@ -1,5 +1,5 @@
 export class Spike {
-    constructor(game, x, y){
+    constructor(game, x, y, state){
         this.game = game;
         this.spriteWidth = 400;
         this.spriteHeight = 400;
@@ -10,7 +10,7 @@ export class Spike {
         this.image = new Image();
         this.image.src = '../assets/spritesheet/object.png';
 
-        this.frame = 0;
+        this.frame = state;
         this.animation = 0;
     }
     update(){
