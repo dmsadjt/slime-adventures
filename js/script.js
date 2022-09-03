@@ -1,5 +1,7 @@
 import { Player } from './player.js';
 import { InputHandler } from './input.js';
+import { Spike } from './spike.js';
+import { Plant } from './plant.js';
 
 window.addEventListener('load', function(){
     const canvas = document.getElementById('play-area');
@@ -22,6 +24,8 @@ window.addEventListener('load', function(){
                 y: this.height / this.canvasRect.height
             }
             this.player = new Player(this);
+            this.spike = new Spike(this);
+            this.plant = new Plant(this);
             this.input = new InputHandler(this.canvasRect, this.canvasScale);
             this.gameFrame = 0;
         }
@@ -30,6 +34,8 @@ window.addEventListener('load', function(){
         }
         draw(context){
             this.player.draw(context);
+            this.spike.draw(context);
+            this.plant.draw(context);
         }
     }
 

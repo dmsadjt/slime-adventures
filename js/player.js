@@ -28,8 +28,8 @@ export class Player {
     update(press, mousePos){
         if(!this.onAir()){
             if(press){
-                // this.vx = 0;
-                // this.vy = 0;
+                this.vx = 0;
+                this.vy = 0;
                 this.power = Math.min(this.maxpower, this.power+this.strength); // charge up power to jump
                 
             } else {
@@ -44,7 +44,6 @@ export class Player {
 
                 if (this.game.gameFrame % 25 == 0) {
                     this.frame > 2 ? this.frame = 0 : this.frame++;
-
                 }
 
                 // this.vy = -this.power * Math.sin(this.anglerad);
@@ -90,7 +89,7 @@ export class Player {
     }
 
     draw(context) {
-        context.drawImage(this.image, this.spriteWidth * this.frame, this.animation * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.frame * this.spriteWidth, this.animation * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
         context.strokeRect(this.x, this.y, this.width, this.height);
         context.fillRect(this.x + this.width / 2, 0, 1, this.game.height); // garis di tengah character
         context.fillRect(this.mousex, this.mousey, 8, 8); // garis horizontal di posisi mouse

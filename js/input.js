@@ -9,6 +9,8 @@ export class InputHandler{
             this.mousedown = true;
         });
         window.addEventListener('mouseup', e => {
+            this.mousePos.x = (e.clientX - canvasRect.left) * canvasScale.x;
+            this.mousePos.y = (e.clientY - canvasRect.top) * canvasScale.y;
             this.mousedown = false;
         });
         window.addEventListener('mousemove', e => {
