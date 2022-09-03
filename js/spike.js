@@ -1,6 +1,5 @@
 export class Spike {
-    constructor(game, x, y, state){
-        this.game = game;
+    constructor(x, y, state){
         this.spriteWidth = 400;
         this.spriteHeight = 400;
         this.width = this.spriteWidth / 4;
